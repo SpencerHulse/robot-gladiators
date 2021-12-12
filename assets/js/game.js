@@ -4,10 +4,11 @@ let playerAttack = 10;
 let playerMoney = 10;
 
 let enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
-let enemyHealth = 50;
+//gives a random health between 40 and 60
+let enemyHealth = Math.floor(Math.random() * 21 + 40);
 let enemyAttack = 12;
 
-let fight = function (enemyName) {
+let fight = function(enemyName) {
   //repeat and execute as long as the enemy and player robots are alive
   while(enemyHealth > 0 && playerHealth > 0) {
     //prompt for accepting or skipping fights
@@ -20,14 +21,15 @@ let fight = function (enemyName) {
       //confirm skip fight (true) || carry out fight function
       if(confirmSkip) {
         window.alert(playerName + " has decided to skip this fight. Goodbye!");
-        playerMoney -= 10;
+        playerMoney = Math.max(0, playerMoney - 10);
         console.log("playerMoney", playerMoney);
         break;
       }
     }
 
     //player damages enemy
-    enemyHealth -= playerAttack;
+    var damage = randomNumber(playerAttack - 3, playerAttack);
+    enemyHealth = Math.max(0, enemyHealth - damage);
     console.log(playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining.");
 
     //enemy's death or current health
@@ -40,7 +42,8 @@ let fight = function (enemyName) {
     };
 
     //enemy damages player
-    playerHealth -= enemyAttack;
+    var damage = randomNumber(enemyAttack - 3, enemyAttack);
+    playerHealth = Math.max(0, playerHealth - damage);
     console.log(enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining.");
 
     //player's death or current health
@@ -63,7 +66,7 @@ let startGame = function() {
     if(playerHealth > 0) {
       window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
       let pickedEnemyName = enemyNames[i];
-      enemyHealth = 50;
+      enemyHealth = randomNumber(40, 60);
       fight(pickedEnemyName);
 
       //if player is still alive and not on the last enemy in the array, the shop is opened
@@ -136,6 +139,12 @@ let shop = function() {
       shop();
       break;
   }
+};
+
+let randomNumber = function(min, max) {
+  let value = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return value;
 };
 
 startGame();
